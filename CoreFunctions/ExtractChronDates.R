@@ -32,7 +32,7 @@ ExtractChronDates<-function(dir,tscale,perfile,first,last){
   #I'm assuming that all data in file YYYY-MM-DD 00:00:00 are for the day YYYY-MM-DD.
   #perfile: optional, the number of data points per file. Default = 1 
     #Currently only works if tscale="I"
-  #first, last: optional, and are full filenames (w/o directory). 
+  #first, last: optional, and are full filenames (without directory). 
     #Use these if you don't want to extract all data, just between some set of filenames (inclusive)
 
   listfiles<-dir(dir)[grep(paste("-",tscale,"-",sep=""),dir(dir))]
