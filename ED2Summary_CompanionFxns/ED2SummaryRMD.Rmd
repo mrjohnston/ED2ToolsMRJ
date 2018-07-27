@@ -1,0 +1,414 @@
+---
+title: "ED2 Model Summary and Assessment"
+author: "Miriam Johnston"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+always_allow_html: yes
+output: 
+  pdf_document:
+    toc: true
+geometry: margin=0.5in
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,message=FALSE,comment=NA,tidy.opts=list(width.cutoff=60))
+```
+
+# ---------------INPUT/OUTPUT SUMMARY---------------
+## Directories
+```{r, echo=FALSE, comment=NA} 
+ED2INdir<-Sys.getenv("ED2INdir")
+analydir<-Sys.getenv("analydir")
+srcdir<-Sys.getenv("srcdir")
+
+#just for testing:
+#ED2INdir="/mnt/odyssey/moorcroftfs5/mjohnston/ED2_timeoutput/Case2/run004/"
+#analydir="/mnt/odyssey/moorcroftfs5/mjohnston/ED2_timeoutput/Case2/run004/analy/"
+#srcdir="/mnt/odyssey/moorcroftfs5/mjohnston/ED2_timeoutput/Case2/EDc/src/"
+
+source("/home/miriam/Dropbox/Harvard/Rpackages/ED2ToolsMRJ/ED2Summary_CompanionFxns/Block1_setwd.R")
+kable(df) %>%
+    kable_styling(full_width=F,position="left")%>%
+    column_spec(1,bold=T,border_right=T,width="10em",background="#C3C3C3") 
+```
+
+```{r, echo=FALSE}
+source("/home/miriam/Dropbox/Harvard/Rpackages/ED2ToolsMRJ/ED2Summary_CompanionFxns/Block2_PrepReadED2IN.R")
+```
+
+##Input files
+```{r,echo=FALSE,results='markup'}
+source("/home/miriam/Dropbox/Harvard/Rpackages/ED2ToolsMRJ/ED2Summary_CompanionFxns/Block3_ExtractfromED2IN.R")
+  kable(df) %>%
+    kable_styling(full_width=F,position="left")%>%
+    column_spec(1,bold=T,border_right=T,width="10em")  %>%
+    column_spec(2,width="15em") %>%
+    column_spec(3,width="20em") %>%
+    row_spec(0,bold=T,background="#C3C3C3")
+```
+
+##Intended Dates
+```{r,echo=FALSE}
+#Also uses Block3 R code
+kable(df2) %>%
+  kable_styling(full_width=F,position="left")%>%
+    column_spec(1,width="15em")  %>%
+    column_spec(2,width="15em") %>%
+    row_spec(0,bold=T,background="#C3C3C3")
+```
+
+##Output Files
+```{r, echo=FALSE,comment=NA}
+source("/home/miriam/Dropbox/Harvard/Rpackages/ED2ToolsMRJ/ED2Summary_CompanionFxns/Block5_ExtractFileInfo.R")
+kable(filesummary) %>%
+  kable_styling(full_width=F,position="left")%>%
+    column_spec(1,width="4em")  %>%
+    column_spec(2,width="5em") %>%
+    row_spec(0,bold=T,background="#C3C3C3")
+```
+
+##Plant Functional Types 
+###(see ED/src/init/ed_params for PFT parameter values)
+```{r, echo=FALSE,comment=NA}
+source("/home/miriam/Dropbox/Harvard/Rpackages/ED2ToolsMRJ/ED2Summary_CompanionFxns/Block4_ExtractFromedparams.R")
+```
+
+# ---------------YEARLY DIAGNOSTICS---------------
+## Number of cohorts and patches over time
+```{r, echo=FALSE,comment=NA,fig.height=4.3, fig.width=6,fig.align='center'}
+source("/home/miriam/Dropbox/Harvard/Rpackages/ED2ToolsMRJ/ED2Summary_CompanionFxns/Block6_YearlyExtractions.R")
+if("Y"%in%tscales){
+  plot(timeslist,ncohg,type="o",pch=20,xlab="",ylab="NCOHORTS_GLOBAL")
+ }
+    ```
+    
+```{r,echo=FALSE,comment=NA,fig.height=4.3, fig.width=6,fig.align='center'}
+#Easier to do only one plot per chunk than to figure out layout
+if("Y"%in%tscales){
+    plot(timeslist,npatg,type="o",pch=20,xlab="",ylab="NPATCHES_GLOBAL")
+    } 
+```
+
+##Above-ground biomass
+```{r, echo=FALSE,comment=NA, fig.height=4.3, fig.width=6,fig.align='center'}
+#AGB
+if("Y"%in%tscales){
+    for(l in 1:length(pfts_num)){
+      if(l==1){
+    plot(timeslist,agb[,1],col=colors[l],type="o",pch=20,ylim=c(min(agb),max(agb)),
+         ylab="AGB (all pat & coh) [kgC/m2]",xlab="")
+      } else {
+    lines(timeslist,agb[,l],col=colors[l],type="o",pch=20)
+      }
+      legend("topleft",lty=1,col=c(colors[1:length(pfts_num)]),legend=pfts_num)
+    }
+  }
+    ```
+    
+## Leaf Area Index
+```{r, echo=FALSE,comment=NA, fig.height=4.3, fig.width=6,fig.align='center'}
+#LAI
+if("Y"%in%tscales){ 
+    for(l in 1:length(pfts_num)){
+      if(l==1){
+    plot(timeslist,lai[,1],col=colors[l],type="o",pch=20,ylim=c(min(lai),max(lai)),
+         ylab="LAI (allpat & coh) [m2/m2]",xlab="")
+      } else {
+    lines(timeslist,lai[,l],col=colors[l],type="o",pch=20)
+      }
+      legend("topleft",lty=1,col=c(colors[1:length(pfts_num)]),legend=pfts_num)
+    }
+      }
+```
+
+## Number of plants
+```{r, echo=FALSE,comment=NA, fig.height=4.3, fig.width=6,fig.align='center'}
+  if("Y"%in%tscales){ 
+    for(l in 1:length(pfts_num)){
+      if(l==1){
+    plot(timeslist,nplant[,1],col=colors[l],type="o",pch=20,ylim=c(min(nplant),max(nplant)),
+         ylab="NPLANT (all pat & coh) [plants/m2]",xlab="")
+      } else {
+    lines(timeslist,nplant[,l],col=colors[l],type="o",pch=20)
+      }
+      legend("topleft",lty=1,col=c(colors[1:length(pfts_num)]),legend=pfts_num)
+    }
+      }
+```
+
+## Basal area 
+```{r,echo=FALSE,comment=NA,fig.height=4.3, fig.width=6,fig.align='center'}
+  if("Y"%in%tscales){ 
+    
+    if(length(yearfilesfull)>5){
+      cat("Below: showing basal area size distributions of first year, final year, \n year 1/3 through simulation, and year 2/3 through simulation")
+    } else {
+      cat("Showing basal area size distributions from all available yearfiles.")
+    } 
+    
+    for(p in 1:length(pfts_num)){
+     for(k in 1:length(basal_area)){ #k = years, there should be 4 or 5 of them (first, 1/3, 2/3, last)
+       max<-max(unlist(lapply(basal_area,function(x) x[pfts_num[p],,1])))
+    if(k==1){
+      plot(sizeclasses,basal_area[[k]][pfts_num[p],,1],col=colors[k],type="o",pch=20,
+           main=paste("PFT:",pfts_num[p]),xaxt="n",
+           ylab="BASAL_AREA [cm2/m2]",xlab="Size Classes (cm)",ylim=c(0,max))
+      axis(1,at=1:11,labels=c("0-10","10-20","20-30","30-40","40-50",
+                              "50-60","60-70","70-80","80-90","90-100",">100"))
+    } else {
+      lines(sizeclasses,basal_area[[k]][pfts_num[p],,1],col=colors[k],type="o",pch=20)
+    }
+       legend("topright",lty=1,col=colors[1:length(basal_area)],legend=subtimeslist)
+     }
+    }
+  }
+```
+  
+# ---------------MONTHLY DIAGNOSTICS---------------
+
+##Number of cohorts and patches over time
+```{r, echo=FALSE,comment=NA,fig.height=4.3, fig.width=6,fig.align='center'}
+source("/home/miriam/Dropbox/Harvard/Rpackages/ED2ToolsMRJ/ED2Summary_CompanionFxns/Block7_MonthlyExtractions.R")
+if("E"%in%tscales){
+  plot(timeslist,ncohg,type="o",pch=20,xlab="",ylab="NCOHORTS_GLOBAL")
+ }
+    ```
+    
+```{r, echo=FALSE,comment=NA,fig.height=4.3, fig.width=6,fig.align='center'}
+if("E"%in%tscales){
+  plot(timeslist,npatg,type="o",pch=20,xlab="",ylab="NPATCHES_GLOBAL")
+}
+```
+
+##Above-ground biomass
+```{r, echo=FALSE,comment=NA,fig.height=4.3, fig.width=6,fig.align='center'}
+if("E"%in%tscales){
+  for(l in 1:length(pfts_num)){
+  if(l==1){
+    plot(timeslist,agb[,1],col=colors[l],type="o",pch=20,ylim=c(min(agb),max(agb)),
+         ylab="AGB (all pat & coh) [kgC/m2]",xlab="")
+  } else {
+    lines(timeslist,agb[,l],col=colors[l],type="o",pch=20)
+  }
+  legend("topleft",lty=1,col=colors[1:length(pfts_num)],legend=pfts_num)
+}
+}
+```
+
+##Leaf area index
+```{r, echo=FALSE,comment=NA,fig.height=4.3, fig.width=6,fig.align='center'}
+if("E"%in%tscales){
+  for(l in 1:length(pfts_num)){
+  if(l==1){
+    plot(timeslist,lai[,1],col=colors[l],type="o",pch=20,ylim=c(min(lai),max(lai)),
+         ylab="LAI (allpat & coh) [m2/m2]",xlab="")
+  } else {
+    lines(timeslist,lai[,l],col=colors[l],type="o",pch=20)
+  }
+  legend("topleft",lty=1,col=colors[1:length(pfts_num)],legend=pfts_num)
+}
+}
+```
+
+##Number of plants
+```{r, echo=FALSE,comment=NA,fig.height=4.3, fig.width=6,fig.align='center'}
+if("E"%in%tscales){
+  for(l in 1:length(pfts_num)){
+  if(l==1){
+    plot(timeslist,nplant[,1],col=colors[l],type="o",pch=20,ylim=c(min(nplant),max(nplant)),
+         ylab="NPLANT (all pat & coh) [plants/m2]",xlab="")
+  } else {
+    lines(timeslist,nplant[,l],col=colors[l],type="o",pch=20)
+  }
+  legend("topleft",lty=1,col=colors[1:length(pfts_num)],legend=pfts_num)
+}
+}
+```
+
+##Basal area
+```{r, echo=FALSE,comment=NA,fig.height=4.3, fig.width=6,fig.align='center'}
+if("E"%in%tscales){
+  if(length(monthfilesfull)>5){
+  cat("Below: showing basal area size distributions of first month, last month, \n month 1/3 through simulation, and month 2/3 through simulation")
+  } else {
+    cat("Showing basal area size distributions from all available yearfiles.")
+  }
+  for(p in 1:length(pfts_num)){
+  for(k in 1:length(basal_area)){ #k = years, there should be 4 of them (first, 1/3, 2/3, last)
+    max<-max(unlist(lapply(basal_area,function(x) x[pfts_num[p],,1])))
+    if(k==1){
+       plot(sizeclasses,basal_area[[k]][pfts_num[p],,1],col=colors[k],type="o",pch=20,
+           main=paste("PFT:",pfts_num[p]),xaxt="n",
+           ylab="BASAL_AREA [cm2/m2]",xlab="Size Classes (cm)",ylim=c(0,max))
+      axis(1,at=1:11,labels=c("0-10","10-20","20-30","30-40","40-50",
+                              "50-60","60-70","70-80","80-90","90-100",">100"))
+    } else {
+      lines(sizeclasses,basal_area[[k]][pfts_num[p],,1],col=colors[k],type="o",pch=20)
+    }
+    legend("topright",lty=1,col=colors[1:length(basal_area)],legend=subtimeslist)
+  }
+}
+}
+```
+
+##Fluxes of carbon, water, sensible heat - yearly patterns
+```{r, echo=FALSE,comment=NA,warning=FALSE,fig.height=4.3, fig.width=6,fig.align='center'}
+if("E"%in%tscales){
+  
+  if(length(sub_firstlast)==0){
+    cat("No complete years of monthly files available; plotting all months")
+  } else if (length(sub_firstlast)==12){
+    cat("First full year of monthly files = last full year of monthly files; plotting only 1 year")
+  } else {
+    cat("Below: showing monthly mean fluxes of the first and last full years of simulation")
+  }
+  
+
+  if(length(subtimeslistyrs)==24){
+    plot(subtimeslistyrs[1:12],mmean_carbon_ac[1:12],type="o",pch=20,xlab="month",ylab="MMEAN_CARBON_AC [umol/m2/s]",
+         ylim=c(min(mmean_carbon_ac),max(mmean_carbon_ac)))
+    lines(subtimeslistyrs[13:24],mmean_carbon_ac[13:24],type="o",pch=20,col="red")
+    legend("topright",col=c("black","red"),legend=c(names(tab[minfullyear]),names(tab[maxfullyear])),lty=1)
+  } else {
+    plot(subtimeslistyrs,mmean_carbon_ac,type="o",pch=20,xlab="month",ylab="MMEAN_CARBON_AC [umol/m2/s]",
+         ylim=c(min(mmean_carbon_ac),max(mmean_carbon_ac)))
+       
+    legend("topright",col=c("black"),legend=y,lty=1)
+  }
+    }
+ 
+```
+
+```{r, echo=FALSE,comment=NA,warning=FALSE,fig.height=4.3, fig.width=6,fig.align='center'}
+if("E"%in%tscales){
+
+  if(length(subtimeslistyrs)==24){
+    plot(subtimeslistyrs[1:12],mmean_vapor_ac[1:12],type="o",pch=20,xlab="month",ylab="MMEAN_VAPOR_AC [umol/m2/s]",
+         ylim=c(min(mmean_vapor_ac),max(mmean_vapor_ac)))
+    lines(subtimeslistyrs[13:24],mmean_vapor_ac[13:24],type="o",pch=20,col="red")
+    legend("topright",col=c("black","red"),legend=c(names(tab[minfullyear]),names(tab[maxfullyear])),lty=1)
+  } else {
+    plot(subtimeslistyrs,mmean_vapor_ac,type="o",pch=20,xlab="month",ylab="MMEAN_VAPOR_AC [umol/m2/s]",
+         ylim=c(min(mmean_vapor_ac),max(mmean_vapor_ac)))
+       
+    legend("topright",col=c("black"),legend=y,lty=1)
+  }
+    }
+ 
+```
+
+```{r, echo=FALSE,comment=NA,warning=FALSE,fig.height=4.3, fig.width=6,fig.align='center'}
+if("E"%in%tscales){
+
+  if(length(subtimeslistyrs)==24){
+    plot(subtimeslistyrs[1:12],mmean_sensible_ac[1:12],type="o",pch=20,xlab="month",ylab="MMEAN_SENSIBLE_AC [umol/m2/s]",
+         ylim=c(min(mmean_sensible_ac),max(mmean_sensible_ac)))
+    lines(subtimeslistyrs[13:24],mmean_sensible_ac[13:24],type="o",pch=20,col="red")
+    legend("topright",col=c("black","red"),legend=c(names(tab[minfullyear]),names(tab[maxfullyear])),lty=1)
+  } else {
+    plot(subtimeslistyrs,mmean_sensible_ac,type="o",pch=20,xlab="month",ylab="MMEAN_SENSIBLE_AC [umol/m2/s]",
+         ylim=c(min(mmean_sensible_ac),max(mmean_sensible_ac)))
+       
+    legend("topright",col=c("black"),legend=y,lty=1)
+  }
+    }
+ 
+```
+
+# ---------------'INSTANTANEOUS' DIAGNOSTICS---------------
+
+##Fluxes of carbon, water, sensible heat - diurnal patterns
+###Legend for the flux plots:
+```{r, echo=FALSE,comment=NA, fig.height=4.3, fig.width=6,fig.align='center'}
+source("/home/miriam/Dropbox/Harvard/Rpackages/ED2ToolsMRJ/ED2Summary_CompanionFxns/Block8_InstantaneousExtractions.R")
+#Make a legend for the flux plots:
+if("I"%in%tscales){ 
+  if(length(fileselec)!=0){
+    for(q in 1:length(filedaysB)){
+      if(q==1){
+      plot(1:3,rep(q,3),col=colors[q],type="o",lty=lty[q],pch=20,ylim=c(1,length(filedaysB)),
+         xlim=c(1,6),xaxt="n",yaxt="n",xlab="",ylab="")
+      text(4.2,q,filedaysB[q])
+      } else {
+        lines(1:3,rep(q,3),col=colors[q],type="o",lty=lty[q],pch=20,ylim=c(1,length(filedaysB)),
+         xlim=c(1,6),xaxt="n",yaxt="n",xlab="",ylab="")
+      text(4.2,q,filedaysB[q])
+      }
+    }
+  }
+  } 
+```
+
+```{r, echo=FALSE,comment=NA,fig.height=4.3, fig.width=6,fig.align='center'}
+if("I"%in%tscales){
+ if(length(fileselec)!=0){
+    for(w in 1:ncol(cmat)){
+      if(w==1){
+    plot(1:dataperday,cmat[,w],type="o",pch=20,col=colors[w],lty=lty[w],
+         ylim=c(min(cmat),max(cmat)), xlab="",ylab="AVG_CARBON_AC [umol/m2/s]",
+         main=paste(pickyr,", First days of all months",sep=""))
+          if(dataperday==24){
+            title(xlab="Hour of day (UTC)")
+          } else if (dataperday==48){
+            title(xlab="Half hour of day (UTC)")
+          } else if (dataperday==12){
+            title(xlab="2-hour increment of day (UTC)")
+          } else {
+            title(xlab="Day")
+          }
+      } else {
+        lines(1:dataperday,cmat[,w],type="o",pch=20, col=colors[w],lty=lty[w])
+      }
+    }
+  } 
+}
+```
+
+```{r, echo=FALSE,comment=NA,fig.height=4.3, fig.width=6,fig.align='center'}
+if("I"%in%tscales){
+ if(length(fileselec)!=0){
+    for(w in 1:ncol(vmat)){
+      if(w==1){
+    plot(1:dataperday,vmat[,w],type="o",pch=20,col=colors[w],lty=lty[w],
+         ylim=c(min(vmat),max(vmat)), xlab="",ylab="AVG_VAPOR_AC [kg/m2/s]",
+         main=paste(pickyr,", First days of all months",sep=""))
+          if(dataperday==24){
+            title(xlab="Hour of day (UTC)")
+          } else if (dataperday==48){
+            title(xlab="Half hour of day (UTC)")
+          } else if (dataperday==12){
+            title(xlab="2-hour increment of day (UTC)")
+          } else {
+            title(xlab="Day")
+          }
+      } else {
+        lines(1:dataperday,vmat[,w],type="o",pch=20, col=colors[w],lty=lty[w])
+      }
+    }
+  } 
+}
+```
+
+```{r, echo=FALSE,comment=NA,fig.height=4.3, fig.width=6,fig.align='center'}
+if("I"%in%tscales){
+ if(length(fileselec)!=0){
+    for(w in 1:ncol(smat)){
+      if(w==1){
+    plot(1:dataperday,smat[,w],type="o",pch=20,col=colors[w],lty=lty[w],
+         ylim=c(min(smat),max(smat)), xlab="",ylab="AVG_SENSIBLE_AC [W/m2]",
+         main=paste(pickyr,", First days of all months",sep=""))
+          if(dataperday==24){
+            title(xlab="Hour of day (UTC)")
+          } else if (dataperday==48){
+            title(xlab="Half hour of day (UTC)")
+          } else if (dataperday==12){
+            title(xlab="2-hour increment of day (UTC)")
+          } else {
+            title(xlab="Day")
+          }
+      } else {
+        lines(1:dataperday,smat[,w],type="o",pch=20, col=colors[w],lty=lty[w])
+      }
+    }
+  } 
+}
+```
