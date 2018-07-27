@@ -27,9 +27,9 @@
 #' @export
 #' 
 
-ED2Summary<-function(ED2INdir,analydir,srcdir){
-  
-  #Put the given directories into the SummaryMaster.sh file
+#ED2Summary<-function(ED2INdir,analydir,srcdir){
+#  
+#  #Put the given directories into the SummaryMaster.sh file
   dirs<-paste('ED2INdir=',"'",ED2INdir,"'","; ",
               'analydir=',"'",analydir,"'","; ",
               'srcdir=',"'",srcdir,"'", sep="")  
