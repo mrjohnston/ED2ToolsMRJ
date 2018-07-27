@@ -1,0 +1,70 @@
+#' Extract Variables from ED2
+#' 
+#' Runs a bash script to extract ED2 variables into .rds objects. \cr \cr
+#' Note: This function does NOT load those .rds objects into the R session; they may be found in folders on Odyssey as reported.
+#' Why bash? Bash is *much* faster than R at variable extraction! Also, multiple bash scripts may be sumitted to Odyssey 
+#' in sequence, which means that your R session isn't tied up during extraction. 
+#' 
+#' @details When you input bashpath, you're telling R where to find a wrapper bash script which does the following: \enumerate{
+#' \item Sets the output directory for the to-be extracted vars & associated output files
+#' \item Saves inputs as system variables
+#' \item Notifies the user of choices (e.g. which vars, tscale, folders,etc)
+#' \item Loops through the variables selected and calls a batch script to submit a job to Odyssey for each
+#' }
+#' The batch script that actually submits the jobs is: ~/code/VarExtractED2/batchsript.txt \cr
+#' The R script that actually extracts and saves the variables is: ~/code/VarExtractED2/ExtractVar_array.R \cr
+#' These 3 scripts must be in the same folder. If running into problems, check the hard-coding of paths. \cr 
+#' 
+#' @section TO USE THIS FUNCTION: \enumerate{
+#' \item Sign in to Odyssey
+#' \item Open an R terminal
+#' \item Import the ED2TooldMRJ package into R on Odyssey or just copy this ExtractVar function into your workspace (easier) 
+#' \item Define inputs for the function (bashpath, vars, etc.)
+#' \item Run on Odyssey; don't assign output to a variable.
+#' }
+#' 
+#' @param bashpath Path & filename to a bash script (on Odyssey) which submits variable extraction jobs. Suggest not to change from "~/code/VarExtractED2/runscript.sh"
+#' @param vars  variables to extract (character string, see below for odd format) 
+#' @param direc directory in which to find the .h5 files (character string, see below for odd format) 
+#' @param tscale time scale for variable extraction (character string, see below for odd format) 
+#' @param extract_option ALL, RANGE, or SINGLE, depending on whether to extract the var(s) from all files in direc, 
+#' files w/i a range (inclusive), or a single file (character string, see below for odd format) 
+#' @param first Read if extract_option = "RANGE", first file from which to extract (character string, see below for odd format) 
+#' @param last Read if extract_option = "RANGE", last file from which to extract (character string, see below for odd format) 
+#' @param singlefile Read if extract_option = "SINGLE", single file from which to extract (character string, see below for odd format) 
+#' 
+#' @return .rds files in folders on Odyssey, as reported by the code output.
+#' 
+#' @examples
+#' 
+#' #THIS IS A BIZARRE BUT REQUIRED FORMAT: double quotes WITHIN single quotes
+#' bashpath<- "~/code/VarExtractED2/runscript.sh"
+#' vars <- '"LEAF_TEMP" "LAI"'
+#' direc<- '"/n/moorcroftfs5/mjohnston/ED2_timeoutput/Case2/run004/analy"'
+#' tscale<-'"D"'
+#' extract_option<- '"ALL"'
+#' first<- '"tonzi-D-2006-07-29-000000-g01.h5"'
+#' last<-  '"tonzi-D-2006-08-02-000000-g01.h5"'
+#' singlefile<- '"tonzi-D-2006-10-29-000000-g01.h5"'
+#' 
+#' #DO NOT assign this function to an R object
+#' ExtractVariable(bashpath,vars,direc,tscale,extract_option,first=NULL,last=NULL,singlefile=NULL)
+#' 
+#' @export
+
+ExtractVariable<-function(bashpath,vars,direc,tscale,extract_option,first=NULL,last=NULL,singlefile=NULL){
+  
+  file<-readLines(bashpath)
+  
+  file[12]<-paste("declare -a arr=(", vars, ")",sep="")
+  file[20]<-paste("direc=", direc , sep="")
+  file[28]<-paste("tscale=",tscale,sep="")
+  file[43]<-paste("extract_option=",extract_option,sep="")
+  file[44]<-paste("first=",first,sep="")
+  file[45]<-paste("last=",last,sep="")
+  file[46]<-paste("singlefile=",singlefile,sep="")
+  
+  writeLines(file,bashpath)
+  
+  system(bashpath)
+}
