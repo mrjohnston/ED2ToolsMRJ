@@ -46,4 +46,4 @@ system("R CMD Rd2pdf ED2ToolsMRJ")
 
 #LOAD PACKAGE INTO R SESSION 
 devtools::load_all("/home/miriam/Dropbox/Harvard/Rpackages/ED2ToolsMRJ/ED2ToolsMRJ") 
-#?function
+##?function
