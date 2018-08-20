@@ -74,12 +74,12 @@ if("E"%in%tscales){
   subtimeslist<- unlist(lapply(lapply(subtemp,function(x) x[3:4]) ,paste0,collapse="-"))
   subtimeslist<-as.Date(as.yearmon(subtimeslist))
   
-  basal_area<-lapply(paste(analydir,monthfilessub,sep=""), h5read, name="BASAL_AREA")
+  basal_area<-lapply(paste(analydir,monthfilessub,sep=""), h5read, name="BASAL_AREA_PY")
   } else {
     subtemp<-strsplit(monthfilesfull,"-")
     subtimeslist<- unlist(lapply(lapply(subtemp,function(x) x[3:4]) ,paste0,collapse="-"))
     subtimeslist<-as.Date(as.yearmon(subtimeslist))
-    basal_area<-lapply(paste(analydir,monthfilesfull,sep=""), h5read, name="BASAL_AREA")
+    basal_area<-lapply(paste(analydir,monthfilesfull,sep=""), h5read, name="BASAL_AREA_PY")
 
   }
   sizeclasses<-seq(1,11,1)
@@ -97,9 +97,9 @@ if("E"%in%tscales){
     monthfilesyrs<-monthfilesfull
     subtemp<-strsplit(monthfilesyrs,"-")
     subtimeslistyrs<- unlist(lapply(lapply(subtemp,function(x) x[4]) ,paste0,collapse="-"))
-    mmean_carbon_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_CARBON_AC"))
-    mmean_vapor_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_VAPOR_AC"))
-    mmean_sensible_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_SENSIBLE_AC"))
+    mmean_carbon_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_CARBON_AC_PY"))
+    mmean_vapor_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_VAPOR_AC_PY"))
+    mmean_sensible_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_SENSIBLE_AC_PY"))
   } else if (length(sub_firstlast)==12){
    # cat("First full year of monthly files = last full year of monthly files; plotting only 1 year")
     monthfilesyrs<-monthfilesfull[sub_firstlast]
@@ -108,9 +108,9 @@ if("E"%in%tscales){
     # subtimeslistyrs<-as.Date(as.yearmon(subtimeslistyrs))
     
     #For first full year and the last full year plot the monthly fluxes over the year
-    mmean_carbon_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_CARBON_AC"))
-    mmean_vapor_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_VAPOR_AC"))
-    mmean_sensible_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_SENSIBLE_AC"))
+    mmean_carbon_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_CARBON_AC_PY"))
+    mmean_vapor_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_VAPOR_AC_PY"))
+    mmean_sensible_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_SENSIBLE_AC_PY"))
   } else {
     #cat("Below: showing monthly mean fluxes of the first and last full years of simulation")
     monthfilesyrs<-monthfilesfull[sub_firstlast]
@@ -119,14 +119,16 @@ if("E"%in%tscales){
    # subtimeslistyrs<-as.Date(as.yearmon(subtimeslistyrs))
   
     #For first full year and the last full year plot the monthly fluxes over the year
-    mmean_carbon_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_CARBON_AC"))
-    mmean_vapor_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_VAPOR_AC"))
-    mmean_sensible_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_SENSIBLE_AC"))
+    mmean_carbon_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_CARBON_AC_PY"))
+    mmean_vapor_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_VAPOR_AC_PY"))
+    mmean_sensible_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_SENSIBLE_AC_PY"))
   }
   
   y<-names(tab[minfullyear]) #for if there's only one full year
   if(is.na(y)){ #For if there is not even a full year
-    y<-unique(unlist(lapply(lapply(subtemp,function(x) x[3]) ,paste0,collapse="-")))
+    #y<-unique(unlist(lapply(lapply(subtemp,function(x) x[3]) ,paste0,collapse="-")))
+    y<-unlist(lapply(lapply(subtemp,function(x) x[3]) ,paste0,collapse="-"))
+    
   }
   
   library(RColorBrewer)

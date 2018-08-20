@@ -23,6 +23,20 @@ if("Y"%in%tscales){
   temp2<-strsplit(yearfiles,"-")
   timeslist<-as.numeric(unlist(lapply(temp2,function(x) x[3]) ))
 
+  #First, check to see if 'PFT' exists in all the yearfiles. Omit the ones it doesn't exist in (only first? sometimes? not really sure why this might happen - incorrect css?)
+  noPFTvar<-vector()
+  for(r in 1:length(yearfiles)){
+    if(!"PFT"%in%h5ls(paste0(analydir,yearfiles[r]))$name){
+      noPFTvar<-c(noPFTvar,r)
+    }
+  }
+  if(length(noPFTvar)>0){
+    cat(paste("The following files don't have a PFT output: ",yearfiles[noPFTvar],".",sep=""))
+    cat("\nOmit in yearly plots.")
+    yearfiles<-yearfiles[-noPFTvar]
+    timeslist<-timeslist[-noPFTvar]
+  }
+
   #Variables that don't need to be scaled
   ncohg<-unlist(lapply(paste(analydir,yearfiles,sep=""), h5read, name="NCOHORTS_GLOBAL"))
   npatg<-unlist(lapply(paste(analydir,yearfiles,sep=""), h5read, name="NPATCHES_GLOBAL"))
@@ -70,11 +84,11 @@ if("Y"%in%tscales){
   subtemp<-strsplit(yearfilessub,"-")
   subtimeslist<-as.numeric(unlist(lapply(subtemp,function(x) x[3]) ))
   
-  basal_area<-lapply(paste(analydir,yearfilessub,sep=""), h5read, name="BASAL_AREA")
+  basal_area<-lapply(paste(analydir,yearfilessub,sep=""), h5read, name="BASAL_AREA_PY")
   } else {
     subtemp<-strsplit(yearfilesfull,"-")
     subtimeslist<-as.numeric(unlist(lapply(subtemp,function(x) x[3]) ))
-  basal_area<-lapply(paste(analydir,yearfilesfull,sep=""), h5read, name="BASAL_AREA")
+  basal_area<-lapply(paste(analydir,yearfilesfull,sep=""), h5read, name="BASAL_AREA_PY")
   }
   sizeclasses<-seq(1,11,1)
   

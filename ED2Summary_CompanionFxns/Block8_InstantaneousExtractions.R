@@ -36,14 +36,14 @@ if("I"%in%tscales){
     filedaysB<-unlist(lapply(lapply(filedaysA,function(x) x[3:5]),paste0,collapse="-" ))
   
     filesperday<-unique(table(filedaysB))
-    timesperfile<-length(h5read(paste(analydir,instmidyear[1],sep=""),"AVG_CARBON_AC"))
+    timesperfile<-length(h5read(paste(analydir,instmidyear[1],sep=""),"FMEAN_CARBON_AC_PY"))
     
     dataperday<-filesperday*timesperfile
   
   #Extract fluxes 
-    avg_carbon_ac<-unlist(lapply(paste(analydir,instmidyear,sep=""), h5read, name="AVG_CARBON_AC"))
-    avg_vapor_ac<-unlist(lapply(paste(analydir,instmidyear,sep=""), h5read, name="AVG_VAPOR_AC"))
-    avg_sensible_ac<-unlist(lapply(paste(analydir,instmidyear,sep=""), h5read, name="AVG_SENSIBLE_AC"))
+    avg_carbon_ac<-unlist(lapply(paste(analydir,instmidyear,sep=""), h5read, name="FMEAN_CARBON_AC_PY"))
+    avg_vapor_ac<-unlist(lapply(paste(analydir,instmidyear,sep=""), h5read, name="FMEAN_VAPOR_AC_PY"))
+    avg_sensible_ac<-unlist(lapply(paste(analydir,instmidyear,sep=""), h5read, name="FMEAN_SENSIBLE_AC_PY"))
     
   #Reformat - each day is a column
     cmat<-matrix(avg_carbon_ac,nrow=dataperday)

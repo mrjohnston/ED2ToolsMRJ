@@ -29,3 +29,6 @@ sleep 2
 echo "Ctrl+Shift+K to knit the RMD"
 xdotool key --window $winID Ctrl+Shift+K
 
+#Move the result file to the appropriate folder
+movecommand
+

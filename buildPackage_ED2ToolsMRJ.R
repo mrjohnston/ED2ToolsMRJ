@@ -12,7 +12,9 @@
 # document()
 # setwd("..")
 
-setwd("/home/miriam/Dropbox/Harvard/Rpackages/ED2ToolsMRJ")
+#setwd("/home/miriam/Dropbox/Harvard/Rpackages/ED2ToolsMRJ")
+setwd("/home/miriam/git/ED2ToolsMRJ")
+
 #CREATE PACKAGE - OVERWRITING PREVIOUS VERSION 
 { 
 try(unlink("ED2ToolsMRJ", recursive = T), T) 
@@ -45,5 +47,6 @@ system("R CMD Rd2pdf ED2ToolsMRJ")
 }
 
 #LOAD PACKAGE INTO R SESSION 
-devtools::load_all("/home/miriam/Dropbox/Harvard/Rpackages/ED2ToolsMRJ/ED2ToolsMRJ") 
-##?function
+#devtools::load_all("/home/miriam/Dropbox/Harvard/Rpackages/ED2ToolsMRJ/ED2ToolsMRJ") 
+devtools::load_all("/home/miriam/git/ED2ToolsMRJ/ED2ToolsMRJ") 
+#?function

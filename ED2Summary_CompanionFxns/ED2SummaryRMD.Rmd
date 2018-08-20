@@ -18,26 +18,26 @@ knitr::opts_chunk$set(echo = TRUE,message=FALSE,comment=NA,tidy.opts=list(width.
 ```{r, echo=FALSE, comment=NA} 
 ED2INdir<-Sys.getenv("ED2INdir")
 analydir<-Sys.getenv("analydir")
-srcdir<-Sys.getenv("srcdir")
+#srcdir<-Sys.getenv("srcdir")
 
 #just for testing:
 #ED2INdir="/mnt/odyssey/moorcroftfs5/mjohnston/ED2_timeoutput/Case2/run004/"
 #analydir="/mnt/odyssey/moorcroftfs5/mjohnston/ED2_timeoutput/Case2/run004/analy/"
 #srcdir="/mnt/odyssey/moorcroftfs5/mjohnston/ED2_timeoutput/Case2/EDc/src/"
 
-source("/home/miriam/Dropbox/Harvard/Rpackages/ED2ToolsMRJ/ED2Summary_CompanionFxns/Block1_setwd.R")
+source("/home/miriam/git/ED2ToolsMRJ/ED2Summary_CompanionFxns/Block1_setwd.R")
 kable(df) %>%
     kable_styling(full_width=F,position="left")%>%
     column_spec(1,bold=T,border_right=T,width="10em",background="#C3C3C3") 
 ```
 
 ```{r, echo=FALSE}
-source("/home/miriam/Dropbox/Harvard/Rpackages/ED2ToolsMRJ/ED2Summary_CompanionFxns/Block2_PrepReadED2IN.R")
+source("/home/miriam/git/ED2ToolsMRJ/ED2Summary_CompanionFxns/Block2_PrepReadED2IN.R")
 ```
 
 ##Input files
 ```{r,echo=FALSE,results='markup'}
-source("/home/miriam/Dropbox/Harvard/Rpackages/ED2ToolsMRJ/ED2Summary_CompanionFxns/Block3_ExtractfromED2IN.R")
+source("/home/miriam/git/ED2ToolsMRJ/ED2Summary_CompanionFxns/Block3_ExtractfromED2IN.R")
   kable(df) %>%
     kable_styling(full_width=F,position="left")%>%
     column_spec(1,bold=T,border_right=T,width="10em")  %>%
@@ -58,7 +58,7 @@ kable(df2) %>%
 
 ##Output Files
 ```{r, echo=FALSE,comment=NA}
-source("/home/miriam/Dropbox/Harvard/Rpackages/ED2ToolsMRJ/ED2Summary_CompanionFxns/Block5_ExtractFileInfo.R")
+source("/home/miriam/git/ED2ToolsMRJ/ED2Summary_CompanionFxns/Block5_ExtractFileInfo.R")
 kable(filesummary) %>%
   kable_styling(full_width=F,position="left")%>%
     column_spec(1,width="4em")  %>%
@@ -67,15 +67,18 @@ kable(filesummary) %>%
 ```
 
 ##Plant Functional Types 
-###(see ED/src/init/ed_params for PFT parameter values)
+###See ED/src/init/ed_params for PFT parameter values, but note that these are often overwritten by XML.
 ```{r, echo=FALSE,comment=NA}
-source("/home/miriam/Dropbox/Harvard/Rpackages/ED2ToolsMRJ/ED2Summary_CompanionFxns/Block4_ExtractFromedparams.R")
+pfts<-paste("PFTs: ",ed2in[grepl("^[[:blank:]]*[^[:blank:]!]",ed2in)&grepl("NL%INCLUDE_THESE_PFT",ed2in)])
+pfts_num<-as.numeric(Numextract(pfts))
+cat(paste("PFTs in model: ",paste(pfts_num,collapse=",")))
+#source("/home/miriam/git/ED2ToolsMRJ/ED2Summary_CompanionFxns/Block4_ExtractFromedparams.R")
 ```
 
 # ---------------YEARLY DIAGNOSTICS---------------
 ## Number of cohorts and patches over time
 ```{r, echo=FALSE,comment=NA,fig.height=4.3, fig.width=6,fig.align='center'}
-source("/home/miriam/Dropbox/Harvard/Rpackages/ED2ToolsMRJ/ED2Summary_CompanionFxns/Block6_YearlyExtractions.R")
+source("/home/miriam/git/ED2ToolsMRJ/ED2Summary_CompanionFxns/Block6_YearlyExtractions.R")
 if("Y"%in%tscales){
   plot(timeslist,ncohg,type="o",pch=20,xlab="",ylab="NCOHORTS_GLOBAL")
  }
@@ -166,8 +169,8 @@ if("Y"%in%tscales){
 # ---------------MONTHLY DIAGNOSTICS---------------
 
 ##Number of cohorts and patches over time
-```{r, echo=FALSE,comment=NA,fig.height=4.3, fig.width=6,fig.align='center'}
-source("/home/miriam/Dropbox/Harvard/Rpackages/ED2ToolsMRJ/ED2Summary_CompanionFxns/Block7_MonthlyExtractions.R")
+```{r, echo=FALSE,comment=NA,warning=FALSE,fig.height=4.3, fig.width=6,fig.align='center'}
+source("/home/miriam/git/ED2ToolsMRJ/ED2Summary_CompanionFxns/Block7_MonthlyExtractions.R")
 if("E"%in%tscales){
   plot(timeslist,ncohg,type="o",pch=20,xlab="",ylab="NCOHORTS_GLOBAL")
  }
@@ -200,7 +203,7 @@ if("E"%in%tscales){
   for(l in 1:length(pfts_num)){
   if(l==1){
     plot(timeslist,lai[,1],col=colors[l],type="o",pch=20,ylim=c(min(lai),max(lai)),
-         ylab="LAI (allpat & coh) [m2/m2]",xlab="")
+         ylab="LAI (all pat & coh) [m2/m2]",xlab="")
   } else {
     lines(timeslist,lai[,l],col=colors[l],type="o",pch=20)
   }
@@ -264,15 +267,19 @@ if("E"%in%tscales){
   
 
   if(length(subtimeslistyrs)==24){
-    plot(subtimeslistyrs[1:12],mmean_carbon_ac[1:12],type="o",pch=20,xlab="month",ylab="MMEAN_CARBON_AC [umol/m2/s]",
+    plot(subtimeslistyrs[1:12],mmean_carbon_ac[1:12],type="o",pch=20,xlab="month",ylab="MMEAN_CARBON_AC_PY [umol/m2/s]",
          ylim=c(min(mmean_carbon_ac),max(mmean_carbon_ac)))
     lines(subtimeslistyrs[13:24],mmean_carbon_ac[13:24],type="o",pch=20,col="red")
     legend("topright",col=c("black","red"),legend=c(names(tab[minfullyear]),names(tab[maxfullyear])),lty=1)
   } else {
-    plot(subtimeslistyrs,mmean_carbon_ac,type="o",pch=20,xlab="month",ylab="MMEAN_CARBON_AC [umol/m2/s]",
-         ylim=c(min(mmean_carbon_ac),max(mmean_carbon_ac)))
+    ycols<-vector()
+    for(g in 1:length(y)){
+      ycols[which(y==unique(y)[g])]<-colors[g]
+    }
+    plot(subtimeslistyrs,mmean_carbon_ac,pch=20,xlab="month",ylab="MMEAN_CARBON_AC_PY [umol/m2/s]",
+         ylim=c(min(mmean_carbon_ac),max(mmean_carbon_ac)),col=ycols)
        
-    legend("topright",col=c("black"),legend=y,lty=1)
+    legend("topright",col=colors[1:length(unique(y))],legend=unique(y),pch=20)
   }
     }
  
@@ -282,15 +289,19 @@ if("E"%in%tscales){
 if("E"%in%tscales){
 
   if(length(subtimeslistyrs)==24){
-    plot(subtimeslistyrs[1:12],mmean_vapor_ac[1:12],type="o",pch=20,xlab="month",ylab="MMEAN_VAPOR_AC [umol/m2/s]",
+    plot(subtimeslistyrs[1:12],mmean_vapor_ac[1:12],type="o",pch=20,xlab="month",ylab="MMEAN_VAPOR_AC_PY [umol/m2/s]",
          ylim=c(min(mmean_vapor_ac),max(mmean_vapor_ac)))
     lines(subtimeslistyrs[13:24],mmean_vapor_ac[13:24],type="o",pch=20,col="red")
     legend("topright",col=c("black","red"),legend=c(names(tab[minfullyear]),names(tab[maxfullyear])),lty=1)
   } else {
-    plot(subtimeslistyrs,mmean_vapor_ac,type="o",pch=20,xlab="month",ylab="MMEAN_VAPOR_AC [umol/m2/s]",
-         ylim=c(min(mmean_vapor_ac),max(mmean_vapor_ac)))
+      ycols<-vector()
+    for(g in 1:length(y)){
+      ycols[which(y==unique(y)[g])]<-colors[g]
+    }
+    plot(subtimeslistyrs,mmean_vapor_ac,pch=20,xlab="month",ylab="MMEAN_VAPOR_AC_PY [umol/m2/s]",
+         ylim=c(min(mmean_vapor_ac),max(mmean_vapor_ac)),col=ycols)
        
-    legend("topright",col=c("black"),legend=y,lty=1)
+    legend("topright",col=colors[1:length(unique(y))],legend=unique(y),pch=20)
   }
     }
  
@@ -300,15 +311,19 @@ if("E"%in%tscales){
 if("E"%in%tscales){
 
   if(length(subtimeslistyrs)==24){
-    plot(subtimeslistyrs[1:12],mmean_sensible_ac[1:12],type="o",pch=20,xlab="month",ylab="MMEAN_SENSIBLE_AC [umol/m2/s]",
+    plot(subtimeslistyrs[1:12],mmean_sensible_ac[1:12],type="o",pch=20,xlab="month",ylab="MMEAN_SENSIBLE_AC_PY [umol/m2/s]",
          ylim=c(min(mmean_sensible_ac),max(mmean_sensible_ac)))
     lines(subtimeslistyrs[13:24],mmean_sensible_ac[13:24],type="o",pch=20,col="red")
     legend("topright",col=c("black","red"),legend=c(names(tab[minfullyear]),names(tab[maxfullyear])),lty=1)
   } else {
-    plot(subtimeslistyrs,mmean_sensible_ac,type="o",pch=20,xlab="month",ylab="MMEAN_SENSIBLE_AC [umol/m2/s]",
-         ylim=c(min(mmean_sensible_ac),max(mmean_sensible_ac)))
+       ycols<-vector()
+    for(g in 1:length(y)){
+      ycols[which(y==unique(y)[g])]<-colors[g]
+    }
+    plot(subtimeslistyrs,mmean_sensible_ac,pch=20,xlab="month",ylab="MMEAN_SENSIBLE_AC_PY [umol/m2/s]",
+         ylim=c(min(mmean_sensible_ac),max(mmean_sensible_ac)),col=ycols)
        
-    legend("topright",col=c("black"),legend=y,lty=1)
+    legend("topright",col=colors[1:length(unique(y))],legend=unique(y),pch=20)
   }
     }
  
@@ -319,7 +334,7 @@ if("E"%in%tscales){
 ##Fluxes of carbon, water, sensible heat - diurnal patterns
 ###Legend for the flux plots:
 ```{r, echo=FALSE,comment=NA, fig.height=4.3, fig.width=6,fig.align='center'}
-source("/home/miriam/Dropbox/Harvard/Rpackages/ED2ToolsMRJ/ED2Summary_CompanionFxns/Block8_InstantaneousExtractions.R")
+source("/home/miriam/git/ED2ToolsMRJ/ED2Summary_CompanionFxns/Block8_InstantaneousExtractions.R")
 #Make a legend for the flux plots:
 if("I"%in%tscales){ 
   if(length(fileselec)!=0){
