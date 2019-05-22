@@ -4,7 +4,6 @@
 #' 
 #' @param ED2INdir Directory containing ED2IN (character string, with terminal "/")
 #' @param analydir Directory containing the result h5 files (character string, usually ending in "analy", with terminal "/")
-#' @param srcdir Directory contaning the ED src files for this model (character string, ending in "src", with terminal "/")
 #'  
 #' @return Summary PDF document - an ED2 "sanity check" summarizing the plants and carbon/water/energy fluxes.
 #' 
@@ -19,14 +18,13 @@
 #' @examples 
 #' ED2INdir<-"/mnt/odyssey/moorcroftfs5/mjohnston/ED2_Ashehad/Case7.6/run048/"
 #' analydir<-"/mnt/odyssey/moorcroftfs5/mjohnston/ED2_Ashehad/Case7.6/run048/analy/"
-#' srcdir<-"/mnt/odyssey/moorcroftfs5/mjohnston/ED2_Ashehad/Case7.6/ED/src/"
 #' 
-#' ED2Summary(ED2INdir,analydir,srcdir)
+#' ED2Summary(ED2INdir,analydir)
 #' 
 #' @export
 #' 
 
-ED2Summary<-function(ED2INdir,analydir,srcdir){
+ED2Summary<-function(ED2INdir,analydir){
   
   #Put the given directories & the move file command into the SummaryMaster.sh file
   dirs<-paste0('ED2INdir=',"'",ED2INdir,"'","; ",
