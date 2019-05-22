@@ -228,20 +228,20 @@ if("E"%in%tscales){
   
 
   if(length(subtimeslistyrs)==24){
-    plot(subtimeslistyrs[1:12],mmean_carbon_ac[1:12],type="o",pch=20,xlab="month",ylab="MMEAN_CARBON_AC_PY [umol/m2/s]",
-         ylim=c(min(mmean_carbon_ac),max(mmean_carbon_ac)))
-    lines(subtimeslistyrs[13:24],mmean_carbon_ac[13:24],type="o",pch=20,col="red")
+    plot(subtimeslistyrs[1:12],mmean_nep_ac[1:12],type="o",pch=20,xlab="month",ylab="MMEAN_NEP_PY [umol/m2/s]",
+         ylim=c(min(mmean_nep_ac),max(mmean_nep_ac)))
+    lines(subtimeslistyrs[13:24],mmean_nep_ac[13:24],type="o",pch=20,col="red")
     legend("topright",col=c("black","red"),legend=c(names(tab[minfullyear]),names(tab[maxfullyear])),lty=1)
   } else {
 #    ycols<-vector()
 #    for(g in 1:length(y)){
 #      ycols[which(y==unique(y)[g])]<-colors[g]
 #    }
-#    plot(subtimeslistyrs,mmean_carbon_ac,pch=20,xlab="month",ylab="MMEAN_CARBON_AC_PY [umol/m2/s]",
-#         ylim=c(min(mmean_carbon_ac),max(mmean_carbon_ac)),col=ycols)
+#    plot(subtimeslistyrs,mmean_nep_ac,pch=20,xlab="month",ylab="MMEAN_nep_AC_PY [umol/m2/s]",
+#         ylim=c(min(mmean_nep_ac),max(mmean_nep_ac)),col=ycols)
        # legend("topright",col=colors[1:length(unique(y))],legend=unique(y),pch=20)
-     plot(subtimeslistyrs,mmean_carbon_ac,type="o",pch=20,xlab="month",ylab="MMEAN_CARBON_AC+PY [umol/m2/s]",
-         ylim=c(min(mmean_carbon_ac),max(mmean_carbon_ac)))
+     plot(subtimeslistyrs,mmean_nep_ac,type="o",pch=20,xlab="month",ylab="MMEAN_NEP_PY [umol/m2/s]",
+         ylim=c(min(mmean_nep_ac),max(mmean_nep_ac)))
 
     legend("topright",col=c("black"),legend=y,lty=1)
 
@@ -317,11 +317,11 @@ if("I"%in%tscales){
       if(q==1){
       plot(1:3,rep(q,3),col=colors[q],type="o",lty=lty[q],pch=20,ylim=c(1,length(unique(filedaysB))),
          xlim=c(1,6),xaxt="n",yaxt="n",xlab="",ylab="")
-      text(4.2,q,filedaysB[q])
+      text(4.2,q,unique(filedaysB)[q])
       } else {
         lines(1:3,rep(q,3),col=colors[q],type="o",lty=lty[q],pch=20,ylim=c(1,length(unique(filedaysB))),
          xlim=c(1,6),xaxt="n",yaxt="n",xlab="",ylab="")
-      text(4.2,q,unique(filedaysB[q]))
+      text(4.2,q,unique(filedaysB)[q])
       }
     }
   }
@@ -334,7 +334,7 @@ if("I"%in%tscales){
     for(w in 1:ncol(cmat)){
       if(w==1){
     plot(1:dataperday,cmat[,w],type="o",pch=20,col=colors[w],lty=lty[w],
-         ylim=c(min(cmat),max(cmat)), xlab="",ylab="FMEAN_CARBON_AC [umol/m2/s]",
+         ylim=c(min(cmat),max(cmat)), xlab="",ylab="FMEAN_NEP_PY [umol/m2/s]",
          main=paste(pickyr,", First days of all months",sep=""))
           if(dataperday==24){
             title(xlab="Hour of day (UTC)")
