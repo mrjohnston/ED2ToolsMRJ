@@ -11,7 +11,7 @@ inmet2<-gsub("'","",inmet2)
 inmet2<-gsub("/"," / ",inmet2)
 
 phentype<-ed2in[grepl("^[[:blank:]]*[^[:blank:]!]",ed2in)&grepl("NL%IPHEN_SCHEME",ed2in)]
-if(as.numeric(gsub("\\D", "", phentype)) ==4) { #If phenology is prescribed aka phentype=4
+if(as.numeric(gsub("\\D", "", phentype)) ==1) { #If phenology is prescribed aka phentype=4
   phenology1<-unlist(strsplit(ed2in[grepl("^[[:blank:]]*[^[:blank:]!]",ed2in)&grepl("NL%PHENPATH",ed2in)],"="))[1]
   phenology2<-unlist(strsplit(ed2in[grepl("^[[:blank:]]*[^[:blank:]!]",ed2in)&grepl("NL%PHENPATH",ed2in)],"="))[2]
   phenology2<-gsub("'","",phenology2)
@@ -51,3 +51,6 @@ datez<-c(
   ed2in[grepl("^[[:blank:]]*[^[:blank:]!]",ed2in)&grepl("NL%ITIMEZ",ed2in)])
 df2<-data.frame(datea,datez)
 names(df2)<-c("Start Request","End Request")
+
+pfts<-paste("PFTs: ",ed2in[grepl("^[[:blank:]]*[^[:blank:]!]",ed2in)&grepl("NL%INCLUDE_THESE_PFT",ed2in)])
+pfts_num<-as.numeric(Numextract(pfts))
