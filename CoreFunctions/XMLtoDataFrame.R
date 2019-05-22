@@ -8,7 +8,8 @@
 #' 
 #' xml<-"/mnt/odyssey/moorcroftfs5/mjohnston/gitruns/run006/Tonzi.xml"
 #' df<-XMLtoDataFrame(xml)
-#' #Note: warning "incomplete final line found on 'xmlfile.xml'" seems not to affect results.
+#' #Note: warning "incomplete final line found on 'xmlfile.xml'" seems not to affect results. 
+#' Delete last (empty) line of the XML file to get rid of this warning.
 #' 
 #' @export
 #' 
