@@ -41,7 +41,7 @@ if("I"%in%tscales){
     dataperday<-filesperday*timesperfile
   
   #Extract fluxes 
-    avg_nep_ac<-unlist(lapply(paste(analydir,instmidyear,sep=""), h5read, name="FMEAN_NEP_AC_PY"))
+    avg_nep_ac<-unlist(lapply(paste(analydir,instmidyear,sep=""), h5read, name="FMEAN_NEP_PY"))
     avg_vapor_ac<-unlist(lapply(paste(analydir,instmidyear,sep=""), h5read, name="FMEAN_VAPOR_AC_PY"))
     avg_sensible_ac<-unlist(lapply(paste(analydir,instmidyear,sep=""), h5read, name="FMEAN_SENSIBLE_AC_PY"))
     
