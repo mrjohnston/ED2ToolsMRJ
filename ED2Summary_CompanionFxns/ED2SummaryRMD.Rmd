@@ -342,8 +342,10 @@ if("I"%in%tscales){
             title(xlab="Half hour of day (UTC)")
           } else if (dataperday==12){
             title(xlab="2-hour increment of day (UTC)")
+          } else if (dataperday==144){
+            title(xlab="10-minute increment of day (UTC)")
           } else {
-            title(xlab="Day")
+            title(xlab="Increment of day")
           }
       } else {
         lines(1:dataperday,cmat[,w],type="o",pch=20, col=colors[w],lty=lty[w])
@@ -367,8 +369,10 @@ if("I"%in%tscales){
             title(xlab="Half hour of day (UTC)")
           } else if (dataperday==12){
             title(xlab="2-hour increment of day (UTC)")
+          } else if (dataperday==144){
+            title(xlab="10-minute increment of day (UTC)")
           } else {
-            title(xlab="Day")
+            title(xlab="Increment of day")
           }
       } else {
         lines(1:dataperday,vmat[,w],type="o",pch=20, col=colors[w],lty=lty[w])
@@ -392,8 +396,10 @@ if("I"%in%tscales){
             title(xlab="Half hour of day (UTC)")
           } else if (dataperday==12){
             title(xlab="2-hour increment of day (UTC)")
+          } else if (dataperday==144){
+            title(xlab="10-minute increment of day (UTC)")
           } else {
-            title(xlab="Day")
+            title(xlab="Increment of day")
           }
       } else {
         lines(1:dataperday,smat[,w],type="o",pch=20, col=colors[w],lty=lty[w])
