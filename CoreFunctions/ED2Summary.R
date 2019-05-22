@@ -4,10 +4,11 @@
 #' 
 #' @param ED2INdir Directory containing ED2IN (character string, with terminal "/")
 #' @param analydir Directory containing the result h5 files (character string, usually ending in "analy", with terminal "/")
+#' @param srcdir Directory contaning the ED src files for this model (character string, ending in "src", with terminal "/")
 #'  
 #' @return Summary PDF document - an ED2 "sanity check" summarizing the plants and carbon/water/energy fluxes.
 #' 
-#' @section Important notes: \itemize{
+#' @section Important notes on this function: \itemize{
 #' \item ***This function will close & re-open your RStudio, deleting environment variables***
 #' \item This function always saves the PDF as: \cr
 #' ED2INdir/ED2Summary.pdf
@@ -18,12 +19,14 @@
 #' @examples 
 #' ED2INdir<-"/mnt/odyssey/moorcroftfs5/mjohnston/ED2_Ashehad/Case7.6/run048/"
 #' analydir<-"/mnt/odyssey/moorcroftfs5/mjohnston/ED2_Ashehad/Case7.6/run048/analy/"
-#' ED2Summary(ED2INdir,analydir)
+#' srcdir<-"/mnt/odyssey/moorcroftfs5/mjohnston/ED2_Ashehad/Case7.6/ED/src/"
+#' 
+#' ED2Summary(ED2INdir,analydir,srcdir)
 #' 
 #' @export
 #' 
 
-ED2Summary<-function(ED2INdir,analydir){
+ED2Summary<-function(ED2INdir,analydir,srcdir){
   
   #Put the given directories & the move file command into the SummaryMaster.sh file
   dirs<-paste0('ED2INdir=',"'",ED2INdir,"'","; ",
