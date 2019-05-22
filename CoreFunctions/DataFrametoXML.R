@@ -1,6 +1,8 @@
 #' Create an ED2 XML file with PFT parameters from an R dataframe 
 #' 
-#' @param df Full path to the dataframe file (character string) OR an R dataframe object
+#' @param df Full path to the dataframe file (character string) OR an R dataframe object, where 
+#' rownames are parameters, columns are pfts (identified by the first row, 'num', not by column names), and 
+#' values are parameter values. ***The easiest way to get a template is to edit the result from XMLtoDataFrame.R***
 #' @param outpath Where the output should be saved (full path, character string)
 #' 
 #' @return ED2-compatible XML file with PFT parameters, saved in outpath
