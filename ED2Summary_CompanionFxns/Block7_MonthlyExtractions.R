@@ -126,9 +126,7 @@ if("E"%in%tscales){
   
   y<-names(tab[minfullyear]) #for if there's only one full year
   if(is.na(y)){ #For if there is not even a full year
-    #y<-unique(unlist(lapply(lapply(subtemp,function(x) x[3]) ,paste0,collapse="-")))
-    y<-unlist(lapply(lapply(subtemp,function(x) x[3]) ,paste0,collapse="-"))
-    
+    y<-unique(unlist(lapply(lapply(subtemp,function(x) x[3]) ,paste0,collapse="-")))
   }
   
   library(RColorBrewer)
