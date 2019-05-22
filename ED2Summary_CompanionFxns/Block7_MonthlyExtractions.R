@@ -97,7 +97,7 @@ if("E"%in%tscales){
     monthfilesyrs<-monthfilesfull
     subtemp<-strsplit(monthfilesyrs,"-")
     subtimeslistyrs<- unlist(lapply(lapply(subtemp,function(x) x[4]) ,paste0,collapse="-"))
-    mmean_carbon_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_CARBON_AC_PY"))
+    mmean_nep_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_NEP_AC_PY"))
     mmean_vapor_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_VAPOR_AC_PY"))
     mmean_sensible_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_SENSIBLE_AC_PY"))
   } else if (length(sub_firstlast)==12){
@@ -108,7 +108,7 @@ if("E"%in%tscales){
     # subtimeslistyrs<-as.Date(as.yearmon(subtimeslistyrs))
     
     #For first full year and the last full year plot the monthly fluxes over the year
-    mmean_carbon_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_CARBON_AC_PY"))
+    mmean_nep_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_NEP_AC_PY"))
     mmean_vapor_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_VAPOR_AC_PY"))
     mmean_sensible_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_SENSIBLE_AC_PY"))
   } else {
@@ -119,7 +119,7 @@ if("E"%in%tscales){
    # subtimeslistyrs<-as.Date(as.yearmon(subtimeslistyrs))
   
     #For first full year and the last full year plot the monthly fluxes over the year
-    mmean_carbon_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_CARBON_AC_PY"))
+    mmean_nep_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_NEP_AC_PY"))
     mmean_vapor_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_VAPOR_AC_PY"))
     mmean_sensible_ac<-unlist(lapply(paste(analydir,monthfilesyrs,sep=""), h5read, name="MMEAN_SENSIBLE_AC_PY"))
   }
