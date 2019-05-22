@@ -58,7 +58,7 @@ if("E"%in%tscales){
       sub<-pft_co[[r]]==pfts_num[k] #selection of the pft
       agb[r,k]<-sum(agb_scale[[r]][sub])
       lai[r,k]<-sum(lai_scale[[r]][sub])
-      nplant[r,k]<-sum(nplant_co[[r]][sub])
+      nplant[r,k]<-sum(nplant_area[[r]][sub])
     }
   }
 
