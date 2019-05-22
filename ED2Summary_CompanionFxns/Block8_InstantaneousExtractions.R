@@ -36,7 +36,7 @@ if("I"%in%tscales){
     filedaysB<-unlist(lapply(lapply(filedaysA,function(x) x[3:5]),paste0,collapse="-" ))
   
     filesperday<-unique(table(filedaysB))
-    timesperfile<-length(h5read(paste(analydir,instmidyear[1],sep=""),"FMEAN_NEP_AC_PY"))
+    timesperfile<-length(h5read(paste(analydir,instmidyear[1],sep=""),"FMEAN_NEP_PY"))
     
     dataperday<-filesperday*timesperfile
   
