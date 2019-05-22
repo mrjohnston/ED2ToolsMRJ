@@ -69,28 +69,28 @@ if("Y"%in%tscales){
       sub<-pft_co[[r]]==pfts_num[k] #selection of the pft
       agb[r,k]<-sum(agb_scale[[r]][sub])
       lai[r,k]<-sum(lai_scale[[r]][sub])
-      nplant[r,k]<-sum(nplant_co[[r]][sub])
+      nplant[r,k]<-sum(nplant_area[[r]][sub])
     }
   }
   
 #Get basal area - subset years if too many (>5)
-  sub<-which(lapply(temp,"[[",2)=="Y")
-  yearfilesfull<-listfiles[sub]
+#  sub<-which(lapply(temp,"[[",2)=="Y")
+#  yearfilesfull<-listfiles[sub]
   
-  if(length(yearfilesfull)>5){
+ # if(length(yearfilesfull)>5){
 #first, last, 1/3, 2/3
-  yearsub<-c(1,floor(length(yearfilesfull)/3),floor(length(yearfilesfull)/3)*2,length(yearfilesfull))
-  yearfilessub<-yearfilesfull[yearsub]
-  subtemp<-strsplit(yearfilessub,"-")
-  subtimeslist<-as.numeric(unlist(lapply(subtemp,function(x) x[3]) ))
-  
-  basal_area<-lapply(paste(analydir,yearfilessub,sep=""), h5read, name="BASAL_AREA_PY")
-  } else {
-    subtemp<-strsplit(yearfilesfull,"-")
-    subtimeslist<-as.numeric(unlist(lapply(subtemp,function(x) x[3]) ))
-  basal_area<-lapply(paste(analydir,yearfilesfull,sep=""), h5read, name="BASAL_AREA_PY")
-  }
-  sizeclasses<-seq(1,11,1)
+  # yearsub<-c(1,floor(length(yearfilesfull)/3),floor(length(yearfilesfull)/3)*2,length(yearfilesfull))
+  # yearfilessub<-yearfilesfull[yearsub]
+  # subtemp<-strsplit(yearfilessub,"-")
+  # subtimeslist<-as.numeric(unlist(lapply(subtemp,function(x) x[3]) ))
+  # 
+  # basal_area<-lapply(paste(analydir,yearfilessub,sep=""), h5read, name="BASAL_AREA_PY")
+  # } else {
+  #   subtemp<-strsplit(yearfilesfull,"-")
+  #   subtimeslist<-as.numeric(unlist(lapply(subtemp,function(x) x[3]) ))
+  # basal_area<-lapply(paste(analydir,yearfilesfull,sep=""), h5read, name="BASAL_AREA_PY")
+  # }
+  # sizeclasses<-seq(1,11,1)
   
   library(RColorBrewer)
   colors<-brewer.pal(n=max(5,length(pfts_num)),name="Set1") #Either 5 colors (for the basal_area plots) or however many PFTs there are.
@@ -103,9 +103,11 @@ if(!"Y"%in%tscales){
  (2) year x npatches_global
  (3) year x AGB by PFT
  (4) year x NPLANT by PFT
- (5) year x LAI by PFT
- (6) basal area by PFT, year 1, 1/3 of simulation, 2/3 of simulation, last year")
+ (5) year x LAI by PFT")
 }
+
+# (6) basal area by PFT, year 1, 1/3 of simulation, 2/3 of simulation, last year")
+  
 
   
   
